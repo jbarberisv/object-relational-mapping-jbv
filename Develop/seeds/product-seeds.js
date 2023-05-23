@@ -33,6 +33,17 @@ const productData = [
   },
 ];
 
-const seedProducts = () => Product.bulkCreate(productData);
+const seedProducts = async () => {
+  try {
+    await Product.sync({ force: true });
+    await Product.bulkCreate(productData);
+    console.log('Product seeded successfully.');
+  } catch (error) {
+    console.error('Error seeding Product:', error);
+  } finally {
+    // Close the database connection if necessary
+    // sequelize.close();
+  }
+};
 
 module.exports = seedProducts;

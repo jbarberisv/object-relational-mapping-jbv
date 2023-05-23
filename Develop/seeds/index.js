@@ -6,21 +6,34 @@ const seedProductTags = require('./product-tag-seeds');
 const sequelize = require('../config/connection');
 
 const seedAll = async () => {
-  await sequelize.sync({ force: true });
-  console.log('\n----- DATABASE SYNCED -----\n');
-  await seedCategories();
-  console.log('\n----- CATEGORIES SEEDED -----\n');
+  try {
+    await sequelize.query('SET FOREIGN_KEY_CHECKS = 0;');
+    console.log('Foreign key checks disabled.');
 
-  await seedProducts();
-  console.log('\n----- PRODUCTS SEEDED -----\n');
+    await sequelize.sync({ force: true });
+    console.log('\n----- DATABASE SYNCED -----\n');
 
-  await seedTags();
-  console.log('\n----- TAGS SEEDED -----\n');
+    await seedCategories();
+    console.log('\n----- CATEGORIES SEEDED -----\n');
 
-  await seedProductTags();
-  console.log('\n----- PRODUCT TAGS SEEDED -----\n');
+    await seedProducts();
+    console.log('\n----- PRODUCTS SEEDED -----\n');
 
-  process.exit(0);
+    await seedTags();
+    console.log('\n----- TAGS SEEDED -----\n');
+
+    await seedProductTags();
+    console.log('\n----- PRODUCT TAGS SEEDED -----\n');
+
+    await sequelize.query('SET FOREIGN_KEY_CHECKS = 1;');
+    console.log('Foreign key checks enabled.');
+
+    process.exit(0);
+  } catch (error) {
+    console.error('Error seeding data:', error);
+    process.exit(1);
+  }
 };
+
 
 seedAll();

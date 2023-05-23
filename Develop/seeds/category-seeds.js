@@ -28,7 +28,7 @@ const seedCategories = async () => {
   } finally {
     // Close the database connection if necessary
     // sequelize.close();
-  }
+  } 
 };
 
-seedCategories();
+module.exports =  seedCategories;
