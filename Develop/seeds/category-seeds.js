@@ -18,6 +18,17 @@ const categoryData = [
   },
 ];
 
-const seedCategories = () => Category.bulkCreate(categoryData);
+const seedCategories = async () => {
+  try {
+    await Category.sync({ force: true });
+    await Category.bulkCreate(categoryData);
+    console.log('Categories seeded successfully.');
+  } catch (error) {
+    console.error('Error seeding categories:', error);
+  } finally {
+    // Close the database connection if necessary
+    // sequelize.close();
+  }
+};
 
-module.exports = seedCategories;
+seedCategories();
