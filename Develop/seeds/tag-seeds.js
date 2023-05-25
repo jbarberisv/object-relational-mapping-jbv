@@ -27,6 +27,17 @@ const tagData = [
   },
 ];
 
-const seedTags = () => Tag.bulkCreate(tagData);
+const seedTags = async () => {
+  try {
+    await Tag.sync({ force: true });
+    await Tag.bulkCreate(tagData);
+    console.log('tag seeded successfully.');
+  } catch (error) {
+    console.error('Error seeding tag:', error);
+  } finally {
+    // Close the database connection if necessary
+    // sequelize.close();
+  } 
+};
 
 module.exports = seedTags;
